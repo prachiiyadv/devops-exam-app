@@ -1,13 +1,7 @@
-FROM python:3.10-slim
-
-# Set working directory
+FROM node:18
 WORKDIR /app
-
-# Install Python dependencies
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
-
-# Copy application files and templates folder
+COPY package*.json ./
+RUN npm install
 COPY . .
-
-CMD ["python", "app.py"]
+EXPOSE 3000
+CMD ["npm", "run", "dev"]

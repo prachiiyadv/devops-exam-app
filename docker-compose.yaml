@@ -1,0 +1,42 @@
+version: "3.8"
+
+services:
+  backend:
+    build: ./backend
+    container_name: devops-backend
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=3000
+      - DB_URI=mongodb://mongo:27017/devopscapstone
+    depends_on:
+      - mongo
+    networks:
+      - devops-network
+
+  frontend:
+    build: ./frontend
+    container_name: devops-frontend
+    ports:
+      - "8081:80"
+    depends_on:
+      - backend
+    networks:
+      - devops-network
+
+  mongo:
+    image: mongo:latest
+    container_name: devops-mongo
+    ports:
+      - "27018:27017"
+    volumes:
+      - mongo-data:/data/db
+    networks:
+      - devops-network
+
+volumes:
+  mongo-data:
+
+networks:
+  devops-network:
+    driver: bridge
